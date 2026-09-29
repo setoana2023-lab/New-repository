@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moon G Cafeteria</title>
+<style>
+:root{
+  --bg:#f7f5ff; --card:#ffffff; --ink:#241b3a; --sub:#6b6180;
+  --brand:#6c3ce0; --brand2:#ffb703; --line:#e7e1fb; --danger:#e5484d;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#171227; --card:#211a37; --ink:#f2eefc; --sub:#b3a8d1; --line:#332a55; }
+}
+:root[data-theme="dark"]{ --bg:#171227; --card:#211a37; --ink:#f2eefc; --sub:#b3a8d1; --line:#332a55; }
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100%;}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--brand),#4c2ba8);padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:14px;padding-left:16px;padding-right:16px;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.15);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:720px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px;}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.15);border-radius:12px;padding:4px;max-width:720px;margin:10px auto 0;}
+.tab{flex:1;text-align:center;padding:8px 6px;border-radius:9px;font-weight:700;font-size:14px;color:#fff;cursor:pointer;opacity:.75;}
+.tab.active{background:#fff;color:var(--brand);opacity:1;}
+main{max-width:720px;margin:0 auto;padding:14px 14px 100px;}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;}
+.chip{white-space:nowrap;padding:7px 16px;border-radius:20px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:13px;cursor:pointer;color:var(--ink);}
+.chip.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+.card img{width:100%;height:100px;object-fit:cover;background:var(--line);}
+.card .ph{width:100%;height:100px;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--line);}
+.card .body{padding:8px 10px 10px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.card h4{margin:0;font-size:14px;}
+.price{font-weight:800;color:var(--brand);font-size:14px;}
+.addrow{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.stepper{display:flex;align-items:center;gap:8px;}
+.stepper button{width:26px;height:26px;border-radius:8px;border:none;background:var(--brand);color:#fff;font-size:16px;cursor:pointer;}
+.addbtn{background:var(--brand2);color:#3a2a00;border:none;border-radius:10px;padding:6px 12px;font-weight:800;font-size:13px;cursor:pointer;}
+.empty{text-align:center;color:var(--sub);padding:30px 10px;}
+.cartbar{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom,0px));right:14px;left:14px;max-width:692px;margin:0 auto;background:var(--brand);color:#fff;border-radius:16px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(0,0,0,.3);cursor:pointer;font-weight:800;z-index:9;}
+.overlay{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.5);z-index:20;display:flex;align-items:flex-end;justify-content:center;}
+.sheet{position:relative;background:var(--card);width:100%;max-width:720px;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:85vh;overflow-y:auto;}
+.sheet h3{margin-top:0;}
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:var(--sub);}
+.field input,.field select,.field textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-family:inherit;font-size:14px;}
+.btn{width:100%;padding:12px;border:none;border-radius:12px;background:var(--brand);color:#fff;font-weight:800;font-size:15px;cursor:pointer;}
+.btn.gold{background:var(--brand2);color:#3a2a00;}
+.btn.outline{background:transparent;border:2px solid var(--brand);color:var(--brand);}
+.close{position:absolute;left:16px;top:12px;background:none;border:none;font-size:20px;color:var(--sub);cursor:pointer;}
+.cartline{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;}
+.totalrow{display:flex;justify-content:space-between;font-weight:800;font-size:16px;padding:10px 0;}
+.admin-lock{text-align:center;padding:40px 16px;}
+.admin-lock input{max-width:220px;margin:12px auto;display:block;text-align:center;}
+.section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:14px;}
+.section h4{margin:0 0 10px;}
+.itemrow{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);}
+.itemrow img,.itemrow .ph{width:44px;height:44px;border-radius:8px;object-fit:cover;font-size:18px;}
+.itemrow .info{flex:1;font-size:13px;}
+.del{background:none;border:none;color:var(--danger);font-weight:800;cursor:pointer;font-size:13px;}
+.toast{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:50%;transform:translateX(50%);background:#1a1a1a;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;z-index:50;max-width:90%;text-align:center;}
+.muted{color:var(--sub);font-size:12px;}
+.warn{background:#fff3cd;color:#7a5b00;border:1px solid #ffe08a;border-radius:10px;padding:10px;font-size:12px;margin-bottom:12px;}
+</style>
+</head>
+<body>
+<script type="application/json" id="seed">{"menu": [{"id": "it_1", "name": "ساندوتش طعمية", "price": 15, "category": "ساندوتشات", "imageUrl": null}, {"id": "it_2", "name": "ساندوتش كرسبي", "price": 50, "category": "ساندوتشات", "imageUrl": null}], "settings": {"cafName": "Moon G", "whatsapp": "201094019829", "adminPass": "moon123", "instapay": "mokhtarko2121@instapay"}}</script>
+<header>
+  <div class="hrow">
+    <div class="brand">🌙 <span id="cafName">Moon G</span></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" id="tabMenu" onclick="switchTab('menu')">القائمة والطلب</div>
+    <div class="tab" id="tabAdmin" onclick="switchTab('admin')">لوحة الكافتريا</div>
+  </div>
+</header>
+<main id="menuView">
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<main id="adminView" style="display:none"></main>
+
+<div class="cartbar" id="cartbar" style="display:none" onclick="openCheckout()">
+  <span id="cartCount">0 عناصر</span>
+  <span id="cartTotal">0 ج.م — إتمام الطلب ⟵</span>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+window.onerror=function(m,s,l){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;background:#e5484d;color:#fff;padding:8px;font-size:12px;z-index:99;direction:ltr';d.textContent='Error: '+m+' (line '+l+')';document.body.appendChild(d);};
+const DRAFT_KEY='moong_draft_v1';
+let MENU=[], SETTINGS={cafName:'Moon G',whatsapp:'',adminPass:'moon123',instapay:'mokhtarko2121@instapay'};
+let CART={};
+let activeCat='all';
+
+function loadData(){
+  let s=null;
+  try{ s=JSON.parse(document.getElementById('seed').textContent); }catch(e){}
+  let draft=null;
+  try{ draft=JSON.parse(localStorage.getItem(DRAFT_KEY)); }catch(e){}
+  const use = draft || s;
+  if(use){ MENU=use.menu||[]; SETTINGS=Object.assign(SETTINGS, use.settings||{}); }
+  document.getElementById('cafName').textContent=SETTINGS.cafName||'Moon G';
+}
+loadData();
+renderChips(); renderGrid();
+
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({menu:MENU, settings:SETTINGS})); }catch(e){}
+}
+
+function switchTab(t){
+  document.getElementById('tabMenu').classList.toggle('active', t==='menu');
+  document.getElementById('tabAdmin').classList.toggle('active', t==='admin');
+  document.getElementById('menuView').style.display = t==='menu'?'block':'none';
+  document.getElementById('adminView').style.display = t==='admin'?'block':'none';
+  if(t==='admin') renderAdmin();
+}
+
+function renderChips(){
+  const cats = ['all', ...new Set(MENU.map(m=>m.category||'أخرى'))];
+  document.getElementById('chips').innerHTML = cats.map(c=>
+    `<div class="chip ${c===activeCat?'active':''}" onclick="setCat('${c}')">${c==='all'?'الكل':escapeHtml(c)}</div>`).join('');
+}
+function setCat(c){ activeCat=c; renderChips(); renderGrid(); }
+
+function renderGrid(){
+  const items = MENU.filter(m=> activeCat==='all' || (m.category||'أخرى')===activeCat);
+  const g = document.getElementById('grid');
+  if(!items.length){ g.innerHTML = '<div class="empty">لا توجد أصناف حتى الآن</div>'; return; }
+  g.innerHTML = items.map(m=>{
+    const qty = CART[m.id]||0;
+    return `<div class="card">
+      ${m.imageUrl?`<img src="${m.imageUrl}">`:`<div class="ph">🥪</div>`}
+      <div class="body">
+        <h4>${escapeHtml(m.name)}</h4>
+        <div class="price">${m.price} ج.م</div>
+        <div class="addrow">
+          ${qty>0?`<div class="stepper"><button onclick="changeQty('${m.id}',-1)">-</button><b>${qty}</b><button onclick="changeQty('${m.id}',1)">+</button></div>`
+          :`<button class="addbtn" onclick="changeQty('${m.id}',1)">أضف</button>`}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  updateCartBar();
+}
+function changeQty(id,d){
+  CART[id]=(CART[id]||0)+d;
+  if(CART[id]<=0) delete CART[id];
+  renderGrid();
+}
+function updateCartBar(){
+  const bar=document.getElementById('cartbar');
+  const ids=Object.keys(CART);
+  if(!ids.length){ bar.style.display='none'; return; }
+  let count=0,total=0;
+  ids.forEach(id=>{ const m=MENU.find(x=>x.id===id); if(m){count+=CART[id]; total+=CART[id]*Number(m.price);} });
+  bar.style.display='flex';
+  document.getElementById('cartCount').textContent = count+' عناصر';
+  document.getElementById('cartTotal').textContent = total+' ج.م — إتمام الطلب ⟵';
+}
+
+function openCheckout(){
+  const ids=Object.keys(CART);
+  if(!ids.length) return;
+  let total=0;
+  const lines = ids.map(id=>{ const m=MENU.find(x=>x.id===id); const sub=m.price*CART[id]; total+=sub;
+    return `<div class="cartline"><span>${escapeHtml(m.name)} × ${CART[id]}</span><span>${sub} ج.م</span></div>`; }).join('');
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="overlay" onclick="if(event.target===this)closeModal()">
+    <div class="sheet">
+      <button class="close" onclick="closeModal()">✕</button>
+      <h3>إتمام الطلب</h3>
+      ${lines}
+      <div class="totalrow"><span>الإجمالي</span><span>${total} ج.م</span></div>
+      <div class="field"><label>الاسم</label><input id="ckName" placeholder="اسمك"></div>
+      <div class="field"><label>رقم التليفون / واتساب</label><input id="ckPhone" placeholder="01xxxxxxxxx" inputmode="tel"></div>
+      <div class="field"><label>مكانك / جامعتك</label>
+        <select id="ckLoc" onchange="document.getElementById('ckLocOther').style.display=this.value==='أخرى'?'block':'none'">
+          <option>جامعة دراية</option><option>جامعة أخرى قريبة</option><option>أخرى</option>
+        </select>
+        <input id="ckLocOther" style="display:none;margin-top:6px" placeholder="اكتب اسم الجامعة / المكان بالتحديد">
+      </div>
+      <div class="field"><label>الميعاد المطلوب استلام الطلب فيه</label><input id="ckTime" type="time"></div>
+      <div class="field"><label>طريقة الدفع</label>
+        <select id="ckPay" onchange="document.getElementById('payBox').style.display=this.value==='انستا باي'?'block':'none'">
+          <option>كاش عند الاستلام</option><option>انستا باي</option>
+        </select>
+      </div>
+      <div id="payBox" class="warn" style="display:none;background:#eaf7ee;color:#1d5c34;border-color:#b7e2c5">
+        حوّل <b>${total} ج.م</b> على انستا باي:<br>
+        <b id="ipa" style="direction:ltr;display:inline-block">${escapeHtml(SETTINGS.instapay||'')}</b>
+        <button class="addbtn" style="margin-right:8px" onclick="copyIpa()">نسخ</button><br>
+        وبعد التحويل ابعت صورة التحويل على واتساب في نفس المحادثة.
+      </div>
+      <button class="btn gold" onclick="submitOrder(${total})">إرسال الطلب عبر واتساب</button>
+    </div>
+  </div>`;
+}
+function copyIpa(){
+  const t=SETTINGS.instapay||'';
+  if(navigator.clipboard){ navigator.clipboard.writeText(t).then(()=>toast('تم نسخ عنوان انستا باي')).catch(()=>toast(t)); }
+  else toast(t);
+}
+function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
+
+function submitOrder(total){
+  const name=document.getElementById('ckName').value.trim();
+  const phone=document.getElementById('ckPhone').value.trim();
+  let loc=document.getElementById('ckLoc').value;
+  if(loc==='أخرى') loc=document.getElementById('ckLocOther').value.trim()||'أخرى';
+  const time=document.getElementById('ckTime').value;
+  const pay=document.getElementById('ckPay').value;
+  if(!name||!phone||!time){ toast('من فضلك أكمل الاسم والتليفون والميعاد'); return; }
+
+  const itemsTxt = Object.keys(CART).map(id=>{ const m=MENU.find(x=>x.id===id); return `${m.name} ×${CART[id]}`; }).join('، ');
+  const msg = `طلب جديد من موقع Moon G 🌙\nالاسم: ${name}\nالتليفون: ${phone}\nالمكان: ${loc}\nالميعاد: ${time}\nطريقة الدفع: ${pay}\nالطلب: ${itemsTxt}\nالإجمالي: ${total} ج.م${pay==='انستا باي'?'\n(سأرسل صورة التحويل هنا)':''}`;
+  const num = (SETTINGS.whatsapp||'').replace(/[^0-9]/g,'');
+  if(!num){ toast('لم يتم ضبط رقم واتساب الكافتريا بعد'); return; }
+  const a=document.createElement('a');
+  a.href = `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+  a.target='_blank'; a.rel='noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+
+  CART={}; closeModal(); renderGrid();
+}
+
+function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(t){ const el=document.createElement('div'); el.className='toast'; el.textContent=t; document.body.appendChild(el); setTimeout(()=>el.remove(),3200); }
+
+// ---------- ADMIN ----------
+let adminUnlocked=false;
+function renderAdmin(){
+  const v=document.getElementById('adminView');
+  if(!adminUnlocked){
+    v.innerHTML = `<div class="admin-lock"><p>ادخل كلمة سر الكافتريا للدخول للوحة التحكم</p>
+      <input id="pw" type="password" placeholder="كلمة السر">
+      <button class="btn" style="max-width:220px;margin:0 auto" onclick="tryUnlock()">دخول</button>
+      <p class="muted">كلمة السر الافتراضية: moon123 (غيّرها من الإعدادات بعد الدخول)</p></div>`;
+    return;
+  }
+  v.innerHTML = `
+  <div class="warn">⚠️ التعديلات هنا بتتحفظ في المتصفح ده بس مؤقتًا. بعد ما تخلص تعديلاتك، اضغط "تنزيل نسخة محدّثة" تحت وارفع الملف الجديد على نفس موقعك (Netlify) بدل القديم عشان التحديث يظهر لكل الطلاب.</div>
+  <div class="section"><h4>⚙️ إعدادات الكافتريا</h4>
+    <div class="field"><label>اسم الكافتريا</label><input id="stName" value="${escapeHtml(SETTINGS.cafName)}"></div>
+    <div class="field"><label>رقم واتساب استلام الطلبات (بالكود الدولي بدون +، مثال 2010xxxxxxxx)</label><input id="stWa" value="${escapeHtml(SETTINGS.whatsapp)}"></div>
+    <div class="field"><label>عنوان انستا باي (IPA)</label><input id="stIpa" value="${escapeHtml(SETTINGS.instapay||'')}"></div>
+    <div class="field"><label>تغيير كلمة سر اللوحة</label><input id="stPw" value="${escapeHtml(SETTINGS.adminPass)}"></div>
+    <button class="btn" onclick="saveAdminSettings()">حفظ الإعدادات (مؤقت في المتصفح)</button>
+  </div>
+  <div class="section"><h4>➕ إضافة صنف جديد</h4>
+    <div class="field"><label>اسم الصنف</label><input id="itName" placeholder="مثال: ساندوتش فراخ"></div>
+    <div class="field"><label>السعر</label><input id="itPrice" type="number" placeholder="45"></div>
+    <div class="field"><label>القسم</label><input id="itCat" placeholder="ساندوتشات / مشروبات"></div>
+    <div class="field"><label>صورة الصنف</label><input id="itImg" type="file" accept="image/*"></div>
+    <button class="btn gold" onclick="addItem()">إضافة الصنف</button>
+  </div>
+  <div class="section"><h4>📋 الأصناف الحالية</h4><div id="itemsList"></div></div>
+  <div class="section">
+    <button class="btn outline" onclick="downloadUpdated()">⬇️ تنزيل نسخة محدّثة من الموقع (index.html)</button>
+    <p class="muted" style="margin-top:8px">بعد التنزيل: افتح موقعك على Netlify واسحب الملف الجديد بدل القديم بنفس الاسم index.html.</p>
+  </div>`;
+  renderItemsList();
+}
+function tryUnlock(){
+  const v=document.getElementById('pw').value;
+  if(v===SETTINGS.adminPass){ adminUnlocked=true; renderAdmin(); } else toast('كلمة السر غلط');
+}
+function saveAdminSettings(){
+  SETTINGS.cafName=document.getElementById('stName').value.trim()||'Moon G';
+  SETTINGS.whatsapp=document.getElementById('stWa').value.trim();
+  SETTINGS.instapay=document.getElementById('stIpa').value.trim();
+  SETTINGS.adminPass=document.getElementById('stPw').value.trim()||'moon123';
+  document.getElementById('cafName').textContent=SETTINGS.cafName;
+  saveDraft();
+  toast('اتحفظ مؤقتًا، متنساش تنزّل نسخة محدّثة وترفعها');
+}
+function renderItemsList(){
+  const el=document.getElementById('itemsList');
+  if(!MENU.length){ el.innerHTML='<p class="muted">لا توجد أصناف بعد</p>'; return; }
+  el.innerHTML = MENU.map(m=>`<div class="itemrow">
+    ${m.imageUrl?`<img src="${m.imageUrl}">`:`<div class="ph">🥪</div>`}
+    <div class="info"><b>${escapeHtml(m.name)}</b><br><span class="muted">${escapeHtml(m.category||'')} — ${m.price} ج.م</span></div>
+    <button class="del" onclick="deleteItem('${m.id}')">حذف</button>
+  </div>`).join('');
+}
+function resizeImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const maxW=480; const scale=Math.min(1, maxW/img.width);
+        const w=Math.round(img.width*scale), h=Math.round(img.height*scale);
+        const c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(c.toDataURL('image/jpeg',0.7));
+      };
+      img.onerror=reject;
+      img.src=e.target.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+async function addItem(){
+  const name=document.getElementById('itName').value.trim();
+  const price=Number(document.getElementById('itPrice').value);
+  const category=document.getElementById('itCat').value.trim()||'أخرى';
+  const file=document.getElementById('itImg').files[0];
+  if(!name||!price){ toast('اكتب الاسم والسعر'); return; }
+  let imageUrl=null;
+  if(file){ try{ imageUrl=await resizeImage(file); }catch(e){ toast('تعذرت معالجة الصورة'); } }
+  MENU.push({id:'it_'+Date.now(), name, price, category, imageUrl});
+  document.getElementById('itName').value=''; document.getElementById('itPrice').value=''; document.getElementById('itCat').value=''; document.getElementById('itImg').value='';
+  saveDraft();
+  renderItemsList(); renderChips(); renderGrid();
+  toast('تمت الإضافة مؤقتًا، متنساش تنزّل نسخة محدّثة وترفعها');
+}
+function deleteItem(id){
+  MENU = MENU.filter(m=>m.id!==id);
+  saveDraft();
+  renderItemsList(); renderChips(); renderGrid();
+}
+function downloadUpdated(){
+  document.getElementById('seed').textContent = JSON.stringify({menu:MENU, settings:SETTINGS});
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='index.html';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  toast('اتنزّل! دلوقتي ارفعه على Netlify بدل الملف القديم');
+}
+</script>
+</body>
+</html>
